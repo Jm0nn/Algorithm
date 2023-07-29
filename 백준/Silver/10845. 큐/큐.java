@@ -24,10 +24,8 @@ public class Main {
 				break;
 
 			case "pop": // 큐에서 정수 빼고 그 수 출력
-				if (queue.isEmpty()) // 큐가 비어있다면
-					sb.append(-1).append('\n'); // -1 출력
-				else
-					sb.append(queue.poll()).append('\n');
+				// 큐가 비어있다면 -1, 그렇지 않다면 첫 번째 요소를 빼고 출력
+				sb.append(queue.isEmpty() ? -1 : queue.poll()).append('\n');
 				break;
 
 			case "size": // 큐의 크기 출력
@@ -35,25 +33,18 @@ public class Main {
 				break;
 
 			case "empty": // 큐가 비어있는지 확인
-				if (queue.isEmpty()) // 비어있으면 1 출력
-					sb.append(1).append('\n');
-				else // 비어있지 않으면 0 출력
-					sb.append(0).append('\n');
+				// 큐가 비어있다면 1, 그렇지 않다면 0 출력
+				sb.append(queue.isEmpty() ? 1 : 0).append('\n');
 				break;
 
 			case "front": // 큐의 가장 앞 정수 출력
-				if (queue.isEmpty()) // 큐가 비어있다면
-					sb.append(-1).append('\n'); // -1 출력
-				else
-					sb.append(queue.peek()).append('\n');
+				// 큐가 비어있다면 -1, 그렇지 않다면 첫 번째 요소 출력
+				sb.append(queue.isEmpty() ? -1 : queue.peek()).append('\n');
 				break;
 
 			case "back": // 큐의 가장 뒷 정수 출력
-				if (queue.isEmpty()) // 큐가 비어있다면
-					sb.append(-1).append('\n'); // -1 출력
-				else { // 가장 마지막에 큐에 넣은 정수 출력
-					sb.append(num).append('\n');
-				}
+				// 큐가 비어있다면 -1, 그렇지 않다면 마지막에 추가된 정수 출력
+				sb.append(queue.isEmpty() ? -1 : num).append('\n');
 				break;
 			}
 		}
