@@ -9,9 +9,7 @@ public class Main {
 		StringBuilder sb = new StringBuilder();
 		
 		int N = Integer.parseInt(br.readLine()); // 별 모양의 높이
-		char[][] map = new char[N][N * 2]; // 별 모양 배열
-		
-		map = star(N); // 별을 찍기 위한 재귀 실행
+		char[][] map = star(N); // 별을 찍기 위한 재귀 실행
 		
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N * 2; j++) {
@@ -25,6 +23,7 @@ public class Main {
 		br.close();
 	}
 	
+	// 별 찍는 메서드
 	static char[][] star(int n) {
 		char[][] small = new char[n][n * 2]; // 리턴할 배열
 		for (int i = 0; i < n; i++) // 배열 전체를 빈 공간으로 채움 (char 기본값 '\0')
