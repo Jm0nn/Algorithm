@@ -9,16 +9,16 @@ import java.util.TreeSet;
 // 앨범정리 프로그램
 public class Main {
 
-	static int delAlbum, delPhoto; // 삭제한 앨범, 사진의 갯수
-
 	static Album head = new Album("album", null); // 최상위 앨범
 	static Album current = head; // 현재 앨범, 프로그램 시작시 최상위 앨범이 선택됨
+
+	static int delAlbum, delPhoto; // 삭제한 앨범, 사진의 갯수
 
 	// 앨범 클래스(트리 구조)
 	public static class Album {
 		String name; // 앨범 이름
 		Album parent; // 상위 앨범
-		SortedMap<String, Album> children; // 하위 앨범
+		SortedMap<String, Album> children; // 하위 앨범 (key: 앨범 이름, value: 앨범 정보)
 		SortedSet<String> photos; // 앨범에 속한 사진
 
 		// 앨범 생성 시 앨범 이름과 상위 앨범을 반드시 추가해야 함
@@ -69,7 +69,7 @@ public class Main {
 			delete(s);
 			break;
 
-		case "ca": // 앨범 이동
+		case "ca": // 앨범 이동하는 명령어
 			ca(s);
 			break;
 		}
@@ -98,16 +98,16 @@ public class Main {
 		switch (s) {
 		case "-1": // 현재 앨범 내에서 이름이 사전순으로 가장 빠른 앨범 삭제
 			if (!current.children.isEmpty()) {
-				String name = current.children.firstKey();
-				deleteAlbum(current.children.get(name));
+				String name = current.children.firstKey(); // 가장 빠른 앨범 이름
+				deleteAlbum(current.children.get(name)); // 해당 앨범 삭제
 				current.children.remove(name);
 				delAlbum++; // 삭제한 앨범의 갯수 증가
 			}
 			break;
 
 		case "0": // 현재 앨범에 속해 있는 모든 앨범 삭제
-			for (String name : current.children.keySet())
-				deleteAlbum(current.children.get(name));
+			for (String name : current.children.keySet()) // 하위 앨범 이름으로 순회
+				deleteAlbum(current.children.get(name)); // 하위 앨범 삭제
 
 			delAlbum += current.children.size(); // 삭제한 앨범의 갯수 더함
 			current.children.clear(); // 현재 앨범의 하위 앨범 초기화
@@ -115,20 +115,20 @@ public class Main {
 
 		case "1": // 현재 앨범 내에서 이름이 사전순으로 가장 늦은 앨범 삭제
 			if (!current.children.isEmpty()) {
-				String name = current.children.lastKey();
-				deleteAlbum(current.children.get(name));
+				String name = current.children.lastKey(); // 가장 늦은 앨범 이름
+				deleteAlbum(current.children.get(name)); // 해당 앨범 삭제
 				current.children.remove(name);
 				delAlbum++; // 삭제한 앨범의 갯수 증가
 			}
 			break;
 
 		default: // 해당 이름을 가진 앨범 삭제
-				if (current.children.containsKey(s)) {
-					// 현재 앨범에 해당 이름의 앨범이 있다면 삭제
-					deleteAlbum(current.children.get(s));
-					current.children.remove(s);
-					delAlbum++; // 삭제한 앨범의 갯수 증가
-					break;
+			// 현재 앨범에 해당 이름의 앨범이 있다면 삭제
+			if (current.children.containsKey(s)) {
+				deleteAlbum(current.children.get(s));
+				current.children.remove(s);
+				delAlbum++; // 삭제한 앨범의 갯수 증가
+				break;
 			}
 		}
 
@@ -138,8 +138,8 @@ public class Main {
 	// 해당 앨범의 모든 하위 앨범과 사진을 삭제하는 메서드
 	static void deleteAlbum(Album now) {
 
-		for (String name : now.children.keySet())
-			deleteAlbum(now.children.get(name)); // 해당 앨범의 하위 앨범을 삭제
+		for (String name : now.children.keySet()) // 하위 앨범 이름으로 순회
+			deleteAlbum(now.children.get(name)); // 하위 앨범을 삭제
 
 		delAlbum += now.children.size(); // 해당 앨범의 삭제한 앨범 갯수 더함
 		delPhoto += now.photos.size(); // 해당 앨범의 삭제한 사진 갯수 더함
@@ -148,8 +148,8 @@ public class Main {
 	// 사진을 삽입하는 메서드
 	static void insert(String s) {
 
+		// 현재 앨범에 같은 이름의 사진이 있다면 사진을 삽입하지 않고 문구 출력 후 리턴
 		if (current.photos.contains(s)) {
-			// 현재 앨범에 같은 이름의 사진이 있다면 사진을 삽입하지 않고 문구 출력 후 리턴
 			sb.append("duplicated photo name\n");
 			return;
 		}
@@ -165,8 +165,8 @@ public class Main {
 
 		switch (s) {
 		case "-1": // 현재 앨범에서 사전순으로 가장 빠른 사진 삭제
+			// 앨범이 비어있지 않다면 사진 삭제
 			if (!current.photos.isEmpty()) {
-				// 앨범이 비어있지 않다면 사진 삭제
 				current.photos.remove(current.photos.first());
 				delPhoto++;
 			}
@@ -178,8 +178,8 @@ public class Main {
 			break;
 
 		case "1": // 현재 앨범에서 사전순으로 가장 늦은 사진 삭제
+			// 앨범이 비어있지 않다면 사진 삭제
 			if (!current.photos.isEmpty()) {
-				// 앨범이 비어있지 않다면 사진 삭제
 				current.photos.remove(current.photos.last());
 				delPhoto++;
 			}
@@ -195,12 +195,13 @@ public class Main {
 		sb.append(delPhoto).append('\n');
 	}
 
+	// 앨범을 이동하는 메서드
 	static void ca(String s) {
 
 		switch (s) {
 		case "..": // 현재 앨범의 상위 앨범으로 이동
+			// 현재 앨범의 상위 앨범이 존재하면 이동
 			if (current.parent != null)
-				// 현재 앨범의 상위 앨범이 존재하면 이동
 				current = current.parent;
 			break;
 
@@ -209,11 +210,9 @@ public class Main {
 			break;
 
 		default: // 해당 이름을 가진 앨범으로 이동
-			if (current.children.containsKey(s)) {
-				// 현재 앨범에 해당 이름의 앨범이 있다면 그 앨범으로 이동
+			// 현재 앨범에 해당 이름의 앨범이 있다면 그 앨범으로 이동
+			if (current.children.containsKey(s))
 				current = current.children.get(s);
-				break;
-			}
 		}
 
 		// 현재 앨범의 이름 출력
