@@ -13,9 +13,10 @@ public class Main {
 		int M = Integer.parseInt(st.nextToken()); // 합을 구하는 횟수
 		int[][] arr = new int[N + 1][N + 1]; // 수 배열 ((1,1)부터 사용)
 
-		for (int i = 1; i <= N; i++) { // (1,1)부터 현재 좌표까지 누적 합 넣음
+		for (int i = 1; i <= N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 1; j <= N; j++)
+				// (1,1)부터 현재 좌표까지 누적 합 넣음
 				arr[i][j] = arr[i][j - 1] + arr[i - 1][j] - arr[i - 1][j - 1] + Integer.parseInt(st.nextToken());
 		}
 
