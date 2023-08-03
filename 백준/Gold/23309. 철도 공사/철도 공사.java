@@ -18,7 +18,6 @@ public class Main {
 	static String cmd;
 
 	public static void main(String[] args) throws Exception {
-
 		st = new StringTokenizer(br.readLine());
 		n = Integer.parseInt(st.nextToken()); // 최초 역의 수
 		m = Integer.parseInt(st.nextToken()); // 명령어 수
@@ -41,29 +40,29 @@ public class Main {
 		while (m-- > 0) {
 			st = new StringTokenizer(br.readLine());
 			cmd = st.nextToken();
+			i = Integer.parseInt(st.nextToken());
+
 			switch (cmd) {
 			case "BN": // i번 역 다음에 j번 역 추가
-				i = Integer.parseInt(st.nextToken());
 				j = Integer.parseInt(st.nextToken());
-				sb.append(insertNext(i, j)).append('\n');
+				sb.append(insertNext(i, j));
 				break;
 
 			case "BP": // i번 역 이전에 j번 역 추가
-				i = Integer.parseInt(st.nextToken());
 				j = Integer.parseInt(st.nextToken());
-				sb.append(insertPrev(i, j)).append('\n');
+				sb.append(insertPrev(i, j));
 				break;
 
 			case "CN": // i번 역 다음 역 제거
-				i = Integer.parseInt(st.nextToken());
-				sb.append(deleteNext(i)).append('\n');
+				sb.append(deleteNext(i));
 				break;
 
 			case "CP": // i번 역 이전 역 제거
-				i = Integer.parseInt(st.nextToken());
-				sb.append(deletePrev(i)).append('\n');
+				sb.append(deletePrev(i));
 				break;
 			}
+
+			sb.append('\n');
 		}
 
 		System.out.println(sb);
