@@ -30,7 +30,7 @@ public class Main {
 		br.close();
 	}
 
-	// cnt: 현재 탐색한 재료의 개수, use: 현재 사용한 재료의 개수
+	// cnt: 현재 탐색한 재료의 개수, use: 현재 사용한 재료의 개수, sin: 현재 신맛, ssn: 현재 쓴맛
 	static void set(int cnt, int use, int sin, int ssn) {
 
 		// 재료 탐색을 끝내면 신맛과 쓴맛의 차이를 구함
@@ -48,7 +48,8 @@ public class Main {
 		}
 
 		isSelected[cnt] = true; // 재료 사용
-		set(cnt + 1, use + 1, sin * ingredient[cnt][0], ssn + ingredient[cnt][1]); // 다음 재료 탐색
+		// 다음 재료 탐색, 신맛은 곱하고 쓴맛은 더함
+		set(cnt + 1, use + 1, sin * ingredient[cnt][0], ssn + ingredient[cnt][1]);
 		isSelected[cnt] = false; // 재료 미사용
 		set(cnt + 1, use, sin, ssn); // 다음 재료 탐색
 	}
