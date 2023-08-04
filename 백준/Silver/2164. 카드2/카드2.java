@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+// N장의 카드를 한장만 남을 때까지 버리고 마지막 남은 카드를 구하는 문제
 public class Main {
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
