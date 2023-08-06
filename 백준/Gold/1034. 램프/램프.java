@@ -12,6 +12,7 @@ public class Main {
 		int n = Integer.parseInt(st.nextToken()); // 행의 개수
 		int m = Integer.parseInt(st.nextToken()); // 열의 개수
 		String[] table = new String[n]; // 테이블을 String으로 받음
+		boolean[] visit = new boolean[n];
 
 		for (int i = 0; i < n; i++)
 			table[i] = br.readLine();
@@ -28,6 +29,10 @@ public class Main {
 
 		for (int i = 0; i < n; i++) { // 각 행마다 판별
 
+			// 확인한 행이라면 다음 행으로 넘어감
+			if (visit[i])
+				continue;
+
 			// 현재 행의 0의 개수
 			int zeroCnt = 0;
 			for (int j = 0; j < m; j++)
@@ -39,11 +44,14 @@ public class Main {
 			if (zeroCnt % 2 != oddEven || zeroCnt > k)
 				continue;
 
-			// 현재 행과 같은 패턴의 행 개수
+			// 현재 행과 같은 패턴의 행 개수를 구하고 방문 확인
 			int pattern = 0;
-			for (int j = 0; j < n; j++)
-				if (table[i].equals(table[j]))
+			for (int j = 0; j < n; j++) {
+				if (table[i].equals(table[j])) {
 					pattern++;
+					visit[j] = true;
+				}
+			}
 
 			// 기존 최댓값과 비교
 			if (pattern > max)
