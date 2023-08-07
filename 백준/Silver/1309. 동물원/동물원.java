@@ -1,11 +1,12 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 // 우리에 사자를 가둘 때 사자가 가로, 세로로 붙지 않도록 배치하는 경우의 수를 구하는 문제
 public class Main {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		int n = sc.nextInt(); // 우리의 크기
+		int n = Integer.parseInt(br.readLine()); // 우리의 크기
 
 		int[][] dp = new int[n][3]; // dp 배열
 		dp[0][0] = 1; // (n, 0) 어느 쪽에도 사자가 없을 때
@@ -22,5 +23,7 @@ public class Main {
 		}
 
 		System.out.println((dp[n - 1][0] + dp[n - 1][1] + dp[n - 1][2]) % 9901);
+
+		br.close();
 	}
 }
