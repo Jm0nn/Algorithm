@@ -2,11 +2,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+// 배열 돌리는 문제
 public class Main {
 
-	static int n, m, r, cnt;
-	static int[][] arr;
-	static int[] cal;
+	static int n, m, r, tmpNum; // n, m: 배열 크기, r: 돌리는 횟수, tmpNum: swap할 때 임시 공간
+	static int[] tmpArr1; // swap할 때 임시 배열
+	static int[][] arr, tmpArr2; // arr: 연산을 적용할 배열, tmpArr2: swap할 때 임시 배열
 
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static StringBuilder sb = new StringBuilder();
@@ -18,7 +19,6 @@ public class Main {
 		m = Integer.parseInt(st.nextToken());
 		r = Integer.parseInt(st.nextToken());
 		arr = new int[n][m];
-		cal = new int[r];
 
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -27,37 +27,35 @@ public class Main {
 		}
 
 		st = new StringTokenizer(br.readLine());
-		for (int i = 0; i < r; i++)
-			cal[i] = Integer.parseInt(st.nextToken());
-
 		for (int i = 0; i < r; i++) {
-			switch (cal[i]) {
-			case 1:
+			switch (Integer.parseInt(st.nextToken())) {
+			case 1: // 상하 반전
 				cal1();
 				break;
 
-			case 2:
+			case 2: // 좌우 반전
 				cal2();
 				break;
 
-			case 3:
-				arr = cal3();
+			case 3: // 오른쪽 90도 회전
+				cal3();
 				break;
 
-			case 4:
-				arr = cal4();
+			case 4: // 왼쪽 90도 회전
+				cal4();
 				break;
 
-			case 5:
+			case 5: // 사분면 오른쪽으로 회전
 				cal5();
 				break;
 
-			case 6:
+			case 6: // 사분면 왼쪽으로 회전
 				cal6();
 				break;
 			}
 		}
 
+		// 최종 배열 출력
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = 0; j < arr[0].length; j++)
 				sb.append(arr[i][j]).append(' ');
@@ -69,68 +67,70 @@ public class Main {
 		br.close();
 	}
 
+	// 상하 반전
 	static void cal1() {
 		for (int i = 0; i < arr.length / 2; i++) {
-			int[] tmp = arr[i];
+			tmpArr1 = arr[i];
 			arr[i] = arr[arr.length - i - 1];
-			arr[arr.length - i - 1] = tmp;
+			arr[arr.length - i - 1] = tmpArr1;
 		}
 	}
 
+	// 좌우 반전
 	static void cal2() {
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = 0; j < arr[0].length / 2; j++) {
-				int tmp = arr[i][j];
+				tmpNum = arr[i][j];
 				arr[i][j] = arr[i][arr[0].length - j - 1];
-				arr[i][arr[0].length - j - 1] = tmp;
+				arr[i][arr[0].length - j - 1] = tmpNum;
 			}
 		}
 	}
 
-	static int[][] cal3() {
-		int[][] tmp = new int[arr[0].length][arr.length];
+	// 오른쪽으로 90도 회전
+	static void cal3() {
+		tmpArr2 = new int[arr[0].length][arr.length];
 
 		for (int i = 0; i < arr.length; i++)
 			for (int j = 0; j < arr[0].length; j++)
-				tmp[j][arr.length - i - 1] = arr[i][j];
+				tmpArr2[j][arr.length - i - 1] = arr[i][j];
 
-		return tmp;
+		arr = tmpArr2;
 	}
 
-	static int[][] cal4() {
-		int[][] tmp = new int[arr[0].length][arr.length];
+	// 왼쪽으로 90도 회전
+	static void cal4() {
+		tmpArr2 = new int[arr[0].length][arr.length];
 
 		for (int i = 0; i < arr.length; i++)
 			for (int j = 0; j < arr[0].length; j++)
-				tmp[arr[0].length - j - 1][i] = arr[i][j];
+				tmpArr2[arr[0].length - j - 1][i] = arr[i][j];
 
-		return tmp;
+		arr = tmpArr2;
 	}
 
+	// 사분면 오른쪽으로 회전
 	static void cal5() {
-		int[][] tmp = new int[arr.length / 2][arr[0].length / 2];
-
-		for (int i = 0; i < tmp.length; i++) {
-			for (int j = 0; j < tmp[0].length; j++) {
-				tmp[i][j] = arr[i][j];
-				arr[i][j] = arr[i + tmp.length][j];
-				arr[i + tmp.length][j] = arr[i + tmp.length][j + tmp[0].length];
-				arr[i + tmp.length][j + tmp[0].length] = arr[i][j + tmp[0].length];
-				arr[i][j + tmp[0].length] = tmp[i][j];
+		for (int i = 0; i < arr.length / 2; i++) {
+			for (int j = 0; j < arr[0].length / 2; j++) {
+				tmpNum = arr[i][j];
+				arr[i][j] = arr[i + arr.length / 2][j];
+				arr[i + arr.length / 2][j] = arr[i + arr.length / 2][j + arr[0].length / 2];
+				arr[i + arr.length / 2][j + arr[0].length / 2] = arr[i][j + arr[0].length / 2];
+				arr[i][j + arr[0].length / 2] = tmpNum;
 			}
 		}
 	}
 
+	// 사분면 왼쪽으로 회전
 	static void cal6() {
-		int[][] tmp = new int[arr.length / 2][arr[0].length / 2];
-
-		for (int i = 0; i < tmp.length; i++) {
-			for (int j = 0; j < tmp[0].length; j++) {
-				tmp[i][j] = arr[i][j];
-				arr[i][j] = arr[i][j + tmp[0].length];
-				arr[i][j + tmp[0].length] = arr[i + tmp.length][j + tmp[0].length];
-				arr[i + tmp.length][j + tmp[0].length] = arr[i + tmp.length][j];
-				arr[i + tmp.length][j] = tmp[i][j];
+		for (int i = 0; i < arr.length / 2; i++) {
+			for (int j = 0; j < arr[0].length / 2; j++) {
+				tmpNum = arr[i][j];
+				arr[i][j] = arr[i][j + arr[0].length / 2];
+				arr[i][j + arr[0].length / 2] = arr[i + arr.length / 2][j + arr[0].length / 2];
+				arr[i + arr.length / 2][j + arr[0].length / 2] = arr[i + arr.length / 2][j];
+				arr[i + arr.length / 2][j] = tmpNum;
 			}
 		}
 	}
