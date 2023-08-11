@@ -94,7 +94,7 @@ public class Main {
 	static boolean np() {
 		int i = k - 1;
 
-		while (i > 0 && rotation[i - 1].idx >= rotation[i].idx)
+		while (i > 0 && rotation[i - 1].compareTo(rotation[i]) >= 0)
 			i--;
 
 		if (i == 0)
@@ -102,7 +102,7 @@ public class Main {
 
 		int j = k - 1;
 
-		while (rotation[i - 1].idx >= rotation[j].idx)
+		while (rotation[i - 1].compareTo(rotation[j]) >= 0)
 			j--;
 
 		swap(i - 1, j);
