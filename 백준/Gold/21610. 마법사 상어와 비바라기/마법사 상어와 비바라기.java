@@ -21,6 +21,7 @@ public class Main {
 		int m = Integer.parseInt(st.nextToken()); // 명령 횟수
 		basket = new int[n + 1][n + 1];
 		cloud = new boolean[n + 1][n + 1];
+		newCloud = new boolean[n + 1][n + 1];
 
 		for (int i = 1; i <= n; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -28,7 +29,7 @@ public class Main {
 				basket[i][j] = Integer.parseInt(st.nextToken());
 		}
 
-		// 초기 구름 생성
+		// 비바라기 시전
 		cloud[n][1] = true;
 		cloud[n][2] = true;
 		cloud[n - 1][1] = true;
@@ -52,13 +53,13 @@ public class Main {
 
 	// 구름 이동, d: 이동 방향, s: 이동 거리
 	static void spell(int d, int s) {
-		newCloud = new boolean[n + 1][n + 1]; // 구름 이동 후 배열 초기화
-
 		for (int i = 1; i <= n; i++) {
 			for (int j = 1; j <= n; j++) {
 				// 구름이 없으면 넘어감
 				if (!cloud[i][j])
 					continue;
+
+				cloud[i][j] = false; // 현재 좌표 구름 제거
 
 				// 이동 후 좌표
 				int ni = i;
@@ -106,12 +107,13 @@ public class Main {
 			}
 		}
 
-		cloud = new boolean[n + 1][n + 1]; // 새로 생성될 구름 배열 초기화
 		for (int i = 1; i <= n; i++) {
 			for (int j = 1; j <= n; j++) {
 				// 구름이 사라진 곳은 다시 구름이 생성되지 않음
-				if (newCloud[i][j])
+				if (newCloud[i][j]) {
+					newCloud[i][j] = false; // 구름 사라짐
 					continue;
+				}
 
 				// 바구니에 들어있는 물의 양이 2 이상일 경우 구름 생성
 				if (basket[i][j] >= 2) {
