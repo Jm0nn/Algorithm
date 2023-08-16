@@ -62,12 +62,11 @@ public class Main {
 
 		move(tmp); // 물고기 이동
 
-		// 상어가 더이상 물고기를 먹을 수 없다면
-		if (!eatable(tmp)) {
-			// 최댓값 갱신
-			if (max < sum)
-				max = sum;
-		}
+		eat(tmp); // 상어가 물고기를 먹음
+
+		// 최댓값 갱신
+		if (max < sum)
+			max = sum;
 	}
 
 	static void move(Fish[][] fish) {
@@ -123,7 +122,7 @@ public class Main {
 		}
 	}
 
-	static boolean eatable(Fish[][] fish) { // 상어가 물고기를 먹을 수 있는지 확인
+	static void eat(Fish[][] fish) { // 상어가 물고기를 먹는 메서드
 		// 상어의 좌표
 		int x = -1;
 		int y = -1;
@@ -147,7 +146,7 @@ public class Main {
 		while (0 <= nx && nx < 4 && 0 <= ny && ny < 4) {
 			// 새로운 좌표에 물고기가 있다면
 			if (fish[nx][ny] != null) {
-				Fish[][] newfish = eat(fish, x, y, nx, ny); // 물고기를 먹은 후의 새로운 배열
+				Fish[][] newfish = eatFish(fish, x, y, nx, ny); // 물고기를 먹은 후의 새로운 배열
 				sum += fish[nx][ny].a;
 				recur(newfish); // 재귀
 				sum -= fish[nx][ny].a;
@@ -157,12 +156,10 @@ public class Main {
 			nx += deltas[d][0];
 			ny += deltas[d][1];
 		}
-
-		return false; // 탐색이 끝나면 먹을 수 있는 물고기가 없음
 	}
 
 	// 물고기를 먹는 메서드, x, y: 상어의 좌표, nx, ny: 먹을 물고기의 좌표
-	static Fish[][] eat(Fish[][] fish, int x, int y, int nx, int ny) {
+	static Fish[][] eatFish(Fish[][] fish, int x, int y, int nx, int ny) {
 		// fish 배열을 넘겨받아 tmp 배열에 복사
 		Fish[][] tmp = new Fish[4][4];
 		for (int i = 0; i < 4; i++) {
