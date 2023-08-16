@@ -5,14 +5,12 @@ import java.util.StringTokenizer;
 public class Main {
 
 	static int[][][] worldCup;
-	static int[][] comp;
-	static int[] result = new int[4];
+	static boolean[] result = new boolean[4];
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		worldCup = new int[4][6][3];
-		comp = new int[6][3];
 
 		for (int i = 0; i < 4; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
@@ -23,47 +21,55 @@ public class Main {
 			}
 		}
 
-		recur(0, 0, 1);
+		for (int i = 0; i < 4; i++)
+			recur(0, i, 0, 1);
 
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < 4; i++)
-			sb.append(result[i]).append(' ');
+		for (int i = 0; i < 4; i++) {
+			if (result[i])
+				sb.append(1);
+			else
+				sb.append(0);
+			sb.append(' ');
+		}
 
 		System.out.println(sb);
 	}
 
-	static void recur(int cnt, int s1, int s2) {
+	static void recur(int cnt, int group, int s1, int s2) {
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (worldCup[group][i][j] < 0)
+					return;
+			}
+		}
+
 		if (cnt == 15) {
-			for (int i = 0; i < 4; i++) {
-				boolean same = true;
-
-				Loop: for (int j = 0; j < 6; j++) {
-					for (int k = 0; k < 3; k++) {
-						if (worldCup[i][j][k] != comp[j][k]) {
-							same = false;
-							break Loop;
-						}
-					}
+			for (int i = 0; i < 6; i++) {
+				for (int j = 0; j < 3; j++) {
+					if (worldCup[group][i][j] != 0)
+						return;
 				}
-
-				if (same)
-					result[i] = 1;
 			}
 
+			result[group] = true;
 			return;
 		}
 
 		for (int i = 0; i < 3; i++) {
-			comp[s1][i] += 1;
-			comp[s2][2 - i] += 1;
+			worldCup[group][s1][i] -= 1;
+			worldCup[group][s2][2 - i] -= 1;
 
 			if (s2 == 5)
-				recur(cnt + 1, s1 + 1, s1 + 2);
+				recur(cnt + 1, group, s1 + 1, s1 + 2);
 			else
-				recur(cnt + 1, s1, s2 + 1);
+				recur(cnt + 1, group, s1, s2 + 1);
 
-			comp[s1][i] -= 1;
-			comp[s2][2 - i] -= 1;
+			if (result[group])
+				return;
+
+			worldCup[group][s1][i] += 1;
+			worldCup[group][s2][2 - i] += 1;
 		}
 
 	}
