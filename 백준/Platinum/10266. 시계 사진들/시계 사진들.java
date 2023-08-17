@@ -29,12 +29,12 @@ public class Main {
 		StringBuilder sb2 = new StringBuilder();
 
 		for (int i = 0; i < n - 1; i++) {
-			sb1.append(clock1[i + 1] - clock1[i]).append(' ');
-			sb2.append(clock2[i + 1] - clock2[i]).append(' ');
+			sb1.append(clock1[i + 1] - clock1[i]);
+			sb2.append(clock2[i + 1] - clock2[i]);
 		}
 
-		sb1.append((360000 + clock1[0]) - clock1[n - 1]).append(' ');
-		sb2.append((360000 + clock2[0]) - clock2[n - 1]).append(' ');
+		sb1.append((360000 + clock1[0]) - clock1[n - 1]);
+		sb2.append((360000 + clock2[0]) - clock2[n - 1]);
 
 		String s1 = sb1.append(sb1.toString()).toString();
 		String s2 = sb2.toString();
@@ -44,9 +44,10 @@ public class Main {
 		// KMP 알고리즘
 		int n1 = s1.length();
 		int n2 = s2.length();
+
 		int[] table = new int[n2];
-		int idx = 0;
-		for (int i = 1; i < n2; i++) {
+
+		for (int i = 1, idx = 0; i < n2; i++) {
 			while (idx > 0 && s2.charAt(i) != s2.charAt(idx))
 				idx = table[idx - 1];
 
@@ -56,22 +57,16 @@ public class Main {
 			}
 		}
 
-		int begin = 0;
-		int matched = 0;
-		while (begin <= n1 - n2) {
-			if (matched < n2 && s1.charAt(begin + matched) == s2.charAt(matched)) {
-				matched++;
-				if (matched == n2) {
+		for (int i = 0, idx = 0; i < n1; i++) {
+			while (idx > 0 && s1.charAt(i) != s2.charAt(idx))
+				idx = table[idx - 1];
+
+			if (s1.charAt(i) == s2.charAt(idx)) {
+				if (idx == n2 - 1) {
 					possible = true;
 					break;
-				}
-			} else {
-				if (matched == 0)
-					begin++;
-				else {
-					begin += matched - table[matched - 1];
-					matched = table[matched - 1];
-				}
+				} else
+					idx += 1;
 			}
 		}
 
