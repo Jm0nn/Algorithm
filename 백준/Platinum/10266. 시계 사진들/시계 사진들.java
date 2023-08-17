@@ -1,78 +1,74 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
 // 두 시계가 같은 시각을 나타내는지 맞추는 문제
 public class Main {
+
+	static final int SIZE = 360_000;
+
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		int n = Integer.parseInt(br.readLine()); // 시계 바늘의 수
-		int[] clock1 = new int[n]; // 시계1
-		int[] clock2 = new int[n]; // 시계2
+		int[] clock1 = new int[SIZE * 2]; // 시계1
+		int[] clock2 = new int[SIZE]; // 시계2
 
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		clock1[0] = Integer.parseInt(st.nextToken());
-		for (int i = 1; i < n; i++)
-			clock1[i] = Integer.parseInt(st.nextToken());
-		st = new StringTokenizer(br.readLine());
-		for (int i = 0; i < n; i++)
-			clock2[i] = Integer.parseInt(st.nextToken());
-
-		// 시계 배열 오름차순 정렬
-		Arrays.sort(clock1);
-		Arrays.sort(clock2);
-
-		// 시계 바늘 간의 차를 입력할 StringBuilder
-		StringBuilder sb1 = new StringBuilder();
-		StringBuilder sb2 = new StringBuilder();
-
-		for (int i = 0; i < n - 1; i++) {
-			sb1.append(clock1[i + 1] - clock1[i]);
-			sb2.append(clock2[i + 1] - clock2[i]);
+		for (int i = 0; i < n; i++) {
+			int num = Integer.parseInt(st.nextToken());
+			// 패턴이 2번 반복됨
+			clock1[num] = 1;
+			clock1[SIZE + num] = 1;
 		}
 
-		sb1.append((360000 + clock1[0]) - clock1[n - 1]);
-		sb2.append((360000 + clock2[0]) - clock2[n - 1]);
-
-		String s1 = sb1.append(sb1.toString()).toString();
-		String s2 = sb2.toString();
-
-		boolean possible = false; // 같은 시계인지 여부
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < n; i++) {
+			int num = Integer.parseInt(st.nextToken());
+			clock2[num] = 1;
+		}
 
 		// KMP 알고리즘
-		int n1 = s1.length();
-		int n2 = s2.length();
+		int len1 = clock1.length;
+		int len2 = clock2.length;
 
-		int[] table = new int[n2];
+		int[] table = new int[len2];
 
-		for (int i = 1, idx = 0; i < n2; i++) {
-			while (idx > 0 && s2.charAt(i) != s2.charAt(idx))
+		for (int i = 1, idx = 0; i < len2; i++) {
+			while (idx > 0 && clock2[i] != clock2[idx])
 				idx = table[idx - 1];
 
-			if (s2.charAt(i) == s2.charAt(idx)) {
+			if (clock2[i] == clock2[idx]) {
 				idx++;
 				table[i] = idx;
 			}
 		}
 
-		for (int i = 0, idx = 0; i < n1; i++) {
-			while (idx > 0 && s1.charAt(i) != s2.charAt(idx))
+		boolean possible = false; // 같은 시계인지 여부
+
+		for (int i = 0, idx = 0; i < len1; i++) {
+			while (idx > 0 && clock1[i] != clock2[idx])
 				idx = table[idx - 1];
 
-			if (s1.charAt(i) == s2.charAt(idx)) {
-				if (idx == n2 - 1) {
+			if (clock1[i] == clock2[idx]) {
+				if (idx == len2 - 1) {
 					possible = true;
 					break;
 				} else
-					idx += 1;
+					idx++;
 			}
 		}
 
 		if (possible)
-			System.out.println("possible");
+			bw.write("possible");
 		else
-			System.out.println("impossible");
+			bw.write("impossible");
+
+		bw.flush();
+		bw.close();
+		br.close();
 	}
 }
