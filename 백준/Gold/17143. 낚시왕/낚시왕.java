@@ -69,24 +69,32 @@ public class Main {
 					if (shark[i][j] == null)
 						continue;
 
-					Shark cur = shark[i][j];
+					Shark cur = shark[i][j]; // 현재 상어
+
+					// 현재 좌표
 					int ni = i;
 					int nj = j;
 
-					// 상어의 현재 방향으로 속도만큼 이동
-					for (int s = 0; s < cur.s; s++) {
+					int s = 0; // 이동 거리
+
+					// 방향에 따라 이동 거리 계산
+					if (cur.d == 1 || cur.d == 2) {
+						s = cur.s % ((r - 1) * 2);
+					} else {
+						s = cur.s % ((c - 1) * 2);
+					}
+
+					// 이동
+					while (s-- > 0) {
 						ni += deltas[cur.d][0];
 						nj += deltas[cur.d][1];
 
-						// 격자판을 벗어나면 방향을 바꿔서 이동
-						if (1 > ni || ni > r || 1 > nj || nj > c) {
-							if (cur.d == 1 || cur.d == 2) {
-								cur.d = 3 - cur.d;
-							} else {
-								cur.d = 7 - cur.d;
-							}
-
+						// 상어가 격자 밖으로 나가면 방향을 반대로 바꿈
+						if (1 > ni || ni > r) {
+							cur.d = 3 - cur.d;
 							ni += deltas[cur.d][0] * 2;
+						} else if (1 > nj || nj > c) {
+							cur.d = 7 - cur.d;
 							nj += deltas[cur.d][1] * 2;
 						}
 					}
