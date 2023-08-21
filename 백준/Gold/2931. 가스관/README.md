@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 11508 KB, 시간: 80 ms
+메모리: 11496 KB, 시간: 80 ms
 
 ### 분류
 
@@ -19,13 +19,13 @@
 <table class="table table-bordered td-center">
 	<tbody>
 		<tr>
-			<td><img alt="" src="" style="width: 37px; height: 59px;"></td>
-			<td><img alt="" src="" style="width: 64px; height: 59px;"></td>
-			<td><img alt="" src="" style="width: 58px; height: 59px;"></td>
-			<td><img alt="" src="" style="width: 46px; height: 59px;"></td>
-			<td><img alt="" src="" style="width: 45px; height: 59px;"></td>
-			<td><img alt="" src="" style="width: 45px; height: 59px;"></td>
-			<td><img alt="" src="" style="width: 45px; height: 59px;"></td>
+			<td><img alt="" src="https://upload.acmicpc.net/3a92cfe2-8d8f-4059-b4e1-1d23b2e7df12/-/crop/73x118/29,0/-/preview/" style="width: 37px; height: 59px;"></td>
+			<td><img alt="" src="https://upload.acmicpc.net/3a92cfe2-8d8f-4059-b4e1-1d23b2e7df12/-/crop/127x118/168,0/-/preview/" style="width: 64px; height: 59px;"></td>
+			<td><img alt="" src="https://upload.acmicpc.net/3a92cfe2-8d8f-4059-b4e1-1d23b2e7df12/-/crop/116x118/339,0/-/preview/" style="width: 58px; height: 59px;"></td>
+			<td><img alt="" src="https://upload.acmicpc.net/3a92cfe2-8d8f-4059-b4e1-1d23b2e7df12/-/crop/91x118/519,0/-/preview/" style="width: 46px; height: 59px;"></td>
+			<td><img alt="" src="https://upload.acmicpc.net/3a92cfe2-8d8f-4059-b4e1-1d23b2e7df12/-/crop/90x118/685,0/-/preview/" style="width: 45px; height: 59px;"></td>
+			<td><img alt="" src="https://upload.acmicpc.net/3a92cfe2-8d8f-4059-b4e1-1d23b2e7df12/-/crop/89x118/853,0/-/preview/" style="width: 45px; height: 59px;"></td>
+			<td><img alt="" src="https://upload.acmicpc.net/3a92cfe2-8d8f-4059-b4e1-1d23b2e7df12/-/crop/90x118/1018,0/-/preview/" style="width: 45px; height: 59px;"></td>
 		</tr>
 		<tr>
 			<td>블록 '<code>|</code>'</td>
@@ -41,7 +41,7 @@
 
 <p>가스는 모스크바에서 자그레브로 흐른다. 가스는 블록을 통해 양방향으로 흐를 수 있다. '<code>+</code>'는 특별한 블록으로, 아래 예시처럼 두 방향 (수직, 수평)으로 흘러야 한다.</p>
 
-<p style="text-align: center;"><img alt="" src="" style="width: 253px; height: 158px;"></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/66956a75-fdf1-4706-923d-cb2794fc0ab9/-/preview/" style="width: 253px; height: 158px;"></p>
 
 <p>파이프 라인의 설계를 마친 후 두 사람은 잠시 저녁을 먹으러 갔다. 그 사이 해커가 침임해 블록 하나를 지웠다. 지운 블록은 빈 칸이 되어있다.</p>
 
