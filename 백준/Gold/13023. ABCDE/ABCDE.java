@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 public class Main {
 
 	static boolean right;
-	static List<Integer> list;
+	static boolean[] visit;
 	static List<Integer>[] friend;
 
 	public static void main(String[] args) throws Exception {
@@ -18,6 +18,7 @@ public class Main {
 		int m = Integer.parseInt(st.nextToken());
 
 		friend = new ArrayList[n];
+		visit = new boolean[n];
 
 		for (int i = 0; i < n; i++)
 			friend[i] = new ArrayList<>();
@@ -33,7 +34,6 @@ public class Main {
 		}
 
 		for (int i = 0; i < n; i++) {
-			list = new ArrayList<>();
 			dfs(1, i);
 			if (right)
 				break;
@@ -48,17 +48,15 @@ public class Main {
 			return;
 		}
 
-		list.add(idx);
-
+		visit[idx] = true;
 		for (int i : friend[idx]) {
-			if (!list.contains(i))
+			if (!visit[i])
 				dfs(depth + 1, i);
 
 			if (right)
 				return;
 		}
-
-		list.remove(list.size() - 1);
+		visit[idx] = false;
 	}
 
 }
