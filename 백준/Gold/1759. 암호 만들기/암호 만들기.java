@@ -3,12 +3,12 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-// 주어진 알파벳으로 중복되는 조합 없이 오름차순으로 최소 한개의 모음과 최소 두개의 자음을 포함하여 암호를 만드는 문제
+//주어진 알파벳으로 중복되는 조합 없이 오름차순으로 최소 한개의 모음과 최소 두개의 자음을 포함하여 암호를 만드는 문제
 public class Main {
 
 	static int L, C; // 암호의 길이, 문자의 갯수
-	static char[] code; // 암호 배열
-	static char[] alpha; // 문자 배열
+	static String[] code; // 암호 배열
+	static String[] alpha; // 문자 배열
 
 	static StringBuilder sb = new StringBuilder();
 
@@ -18,12 +18,12 @@ public class Main {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		L = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
-		code = new char[L];
-		alpha = new char[C];
+		code = new String[L];
+		alpha = new String[C];
 
 		st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < C; i++)
-			alpha[i] = st.nextToken().charAt(0);
+			alpha[i] = st.nextToken();
 
 		Arrays.sort(alpha); // 문자 배열 오름차순 정렬
 
@@ -39,7 +39,7 @@ public class Main {
 		if (depth == L) { // 암호의 길이에 도달했다면
 			int vowels = 0; // 암호 내 모음의 갯수
 			for (int i = 0; i < L; i++) {
-				if ("aeiou".contains(String.valueOf(code[i])))
+				if ("aeiou".contains(code[i]))
 					vowels++; // 암호 문자를 돌며 모음의 갯수 계산
 			}
 
