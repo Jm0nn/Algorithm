@@ -11,7 +11,6 @@ public class Main {
 
 	static int n, m; // 사무실 크기
 	static int min = Integer.MAX_VALUE; // 사각지대 최솟값
-	static int[][] office; // 사무실 배열
 	static List<CCTV> cctv = new ArrayList<>(); // cctv 리스트
 
 	// cctv 클래스
@@ -33,7 +32,7 @@ public class Main {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
-		office = new int[n][m];
+		int[][] office = new int[n][m]; // 사무실 배열
 
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -47,15 +46,13 @@ public class Main {
 			}
 		}
 
-		recur(0, office); // 재귀로 사각지대 계산
+		dfs(0, office); // dfs로 사각지대 계산
 
 		System.out.println(min);
-
-		br.close();
 	}
 
 	// depth: 감시한 cctv 개수, map: 사무실 배열
-	static void recur(int depth, int[][] map) {
+	static void dfs(int depth, int[][] map) {
 		// cctv 전체가 감시를 마쳤으면
 		if (depth == cctv.size()) {
 			int cnt = 0; // 현재 사각지대 개수
@@ -72,16 +69,16 @@ public class Main {
 			return;
 		}
 
-		CCTV now = cctv.get(depth); // 현재 cctv
+		CCTV cur = cctv.get(depth); // 현재 cctv
 
-		if (now.num == 5) // cctv 번호가 5번이면 사방을 한번에 감시
-			recur(depth + 1, watch(map, now.x, now.y, 0, 5));
-		else if (now.num == 2)
+		if (cur.num == 5) // cctv 번호가 5번이면 사방을 한번에 감시
+			dfs(depth + 1, watch(map, cur.x, cur.y, 0, 5));
+		else if (cur.num == 2) // 2번이면 상하 또는 좌우 감시
 			for (int d = 0; d < 2; d++)
-				recur(depth + 1, watch(map, now.x, now.y, d, 2));
-		else // 1~4번이라면 방향을 정해서 감시
+				dfs(depth + 1, watch(map, cur.x, cur.y, d, 2));
+		else // 1~4번이면 방향을 정해서 감시
 			for (int d = 0; d < 4; d++)
-				recur(depth + 1, watch(map, now.x, now.y, d, now.num));
+				dfs(depth + 1, watch(map, cur.x, cur.y, d, cur.num));
 	}
 
 	// cctv가 감시한 곳은 -1로 표시, map: 사무실 배열, x,y: cctv 좌표, d: 감시 방향, camNum: cctv 번호
