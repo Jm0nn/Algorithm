@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 // 그래프의 최소 스패닝 트리를 구하는 문제
@@ -8,14 +9,14 @@ public class Main {
 
 	static int v, e; // 정점, 간선의 개수
 	static int[] parents; // 서로소 그룹의 대표 정점
-	static Edge[] edgeList; // 간선 리스트
+	static PriorityQueue<Edge> edgeList; // 간선 리스트
 
 	// 간선 클래스
 	static class Edge implements Comparable<Edge> {
 		int from, to; // 두 정점
-		long weight; // 가중치
+		int weight; // 가중치
 
-		Edge(int from, int to, long weight) {
+		Edge(int from, int to, int weight) {
 			this.from = from;
 			this.to = to;
 			this.weight = weight;
@@ -24,7 +25,7 @@ public class Main {
 		// 가중치의 오름차순 정렬
 		@Override
 		public int compareTo(Edge o) {
-			return (int) (this.weight - o.weight);
+			return this.weight - o.weight;
 		}
 	}
 
@@ -36,7 +37,7 @@ public class Main {
 		e = Integer.parseInt(st.nextToken());
 
 		parents = new int[v + 1];
-		edgeList = new Edge[e];
+		edgeList = new PriorityQueue<>();
 
 		for (int i = 1; i <= v; i++)
 			parents[i] = i;
@@ -48,15 +49,15 @@ public class Main {
 			int to = Integer.parseInt(st.nextToken());
 			int weight = Integer.parseInt(st.nextToken());
 
-			edgeList[i] = new Edge(from, to, weight);
+			edgeList.offer(new Edge(from, to, weight));
 		}
 
-		Arrays.sort(edgeList); // 간선 리스트 가중치의 오름차순으로 정렬
-
-		long sum = 0; // 최소 스패닝 트리의 가중치
+		int sum = 0; // 최소 스패닝 트리의 가중치
 		int cnt = 0; // 연결된 간선의 개수
 
-		for (Edge edge : edgeList) {
+		while (!edgeList.isEmpty()) {
+			Edge edge = edgeList.poll();
+
 			// 서로소 그룹을 만들었다면
 			if (union(edge.from, edge.to)) {
 				sum += edge.weight; // 가중치 합산
