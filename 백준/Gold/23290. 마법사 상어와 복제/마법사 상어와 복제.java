@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -14,20 +12,15 @@ public class Main {
 	static int[] deltas = { 3, 1, 7, 5 };
 
 	static int max; // 상어 이동 시 제외되는 물고기 최댓값
-	static int[][] map; // 물고기 수 배열
-	static List<Integer>[][] dirMap, dirClone, dirTmp; // 물고기 방향 배열
+	static int[][][] dirMap, dirClone, dirTmp; // 물고기 배열, 해당 위치의 해당 방향 물고기 수를 표시
 	static int[][] move, tmp; // 상어 이동 좌표 배열
 	static boolean[][] visit; // 방문 배열
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		map = new int[5][5];
-		dirMap = new ArrayList[5][5];
-
-		for (int i = 1; i < 5; i++)
-			for (int j = 1; j < 5; j++)
-				dirMap[i][j] = new ArrayList<>();
+		dirMap = new int[5][5][9];
+		dirClone = new int[5][5][9];
 
 		boolean[][] smell = new boolean[5][5]; // 냄새 여부 배열
 		int[][] smellCnt = new int[5][5]; // 냄새 유지 카운트 배열
@@ -46,8 +39,7 @@ public class Main {
 			int fy = Integer.parseInt(st.nextToken());
 			int d = Integer.parseInt(st.nextToken());
 
-			dirMap[fx][fy].add(d);
-			map[fx][fy]++;
+			dirMap[fx][fy][d]++; // 해당 방향 물고기 수 증가
 		}
 
 		int[] shark = new int[2]; // 상어 위치 배열
@@ -57,49 +49,43 @@ public class Main {
 
 		// 물고기 복제 마법 연습
 		while (s-- > 0) {
-			dirTmp = new ArrayList[5][5];
-			dirClone = new ArrayList[5][5];
+			dirTmp = new int[5][5][9];
+			dirClone = new int[5][5][9];
+
+			// 물고기 이동
 			for (int i = 1; i < 5; i++) {
 				for (int j = 1; j < 5; j++) {
-					dirTmp[i][j] = new ArrayList<>();
-					dirClone[i][j] = new ArrayList<>();
-				}
-			}
+					loop: for (int d = 1; d <= 8; d++) {
+						dirClone[i][j][d] = dirMap[i][j][d]; // 복제 마법 시전
 
-			for (int i = 1; i < 5; i++) {
-				for (int j = 1; j < 5; j++) {
-					dirClone[i][j].addAll(dirMap[i][j]); // 복제 마법 시전
+						if (dirMap[i][j][d] == 0)
+							continue;
 
-					// 물고기 이동
-					loop: for (int idx = 0; idx < dirMap[i][j].size(); idx++) {
-						int d = dirMap[i][j].get(idx);
-
-						int nx = i + dir[d][0];
-						int ny = j + dir[d][1];
+						int nd = d;
+						int nx = i + dir[nd][0];
+						int ny = j + dir[nd][1];
 
 						// 격자를 벗어나거나 냄새가 남아있거나 상어가 있는 곳으로는 이동 불가능
 						while (1 > nx || nx > 4 || 1 > ny || ny > 4 || smell[nx][ny]
 								|| (nx == shark[0] && ny == shark[1])) {
 							// 시계 반대방향으로 회전
-							d--;
+							nd--;
 
-							if (d == 0)
-								d = 8;
+							if (nd == 0)
+								nd = 8;
 
-							nx = i + dir[d][0];
-							ny = j + dir[d][1];
+							nx = i + dir[nd][0];
+							ny = j + dir[nd][1];
 
 							// 물고기가 이동할 수 있는 곳이 없으면 이동하지 않음
-							if (d == dirMap[i][j].get(idx)) {
-								dirTmp[i][j].add(d);
+							if (nd == d) {
+								dirTmp[i][j][d] += dirMap[i][j][d];
 								continue loop;
 							}
 						}
 
 						// 물고기 이동
-						dirTmp[nx][ny].add(d);
-						map[i][j]--;
-						map[nx][ny]++;
+						dirTmp[nx][ny][nd] += dirMap[i][j][d];
 					}
 				}
 			}
@@ -122,25 +108,34 @@ public class Main {
 
 			// 상어 이동 경로에 물고기가 있으면 경로상 물고기 제외됨
 			// 물고기 제외된 칸 물고기 냄새 남김
-			if (map[x1][y1] > 0) {
-				dirMap[x1][y1].clear();
-				map[x1][y1] = 0;
-				smell[x1][y1] = true;
-				smellCnt[x1][y1] = 3;
+			for (int i = 1; i <= 8; i++) {
+				if (dirMap[x1][y1][i] > 0) {
+					for (int j = i; j <= 8; j++)
+						dirMap[x1][y1][j] = 0;
+					smell[x1][y1] = true;
+					smellCnt[x1][y1] = 3;
+					break;
+				}
 			}
 
-			if (map[x2][y2] > 0) {
-				dirMap[x2][y2].clear();
-				map[x2][y2] = 0;
-				smell[x2][y2] = true;
-				smellCnt[x2][y2] = 3;
+			for (int i = 1; i <= 8; i++) {
+				if (dirMap[x2][y2][i] > 0) {
+					for (int j = i; j <= 8; j++)
+						dirMap[x2][y2][j] = 0;
+					smell[x2][y2] = true;
+					smellCnt[x2][y2] = 3;
+					break;
+				}
 			}
 
-			if (map[x3][y3] > 0) {
-				dirMap[x3][y3].clear();
-				map[x3][y3] = 0;
-				smell[x3][y3] = true;
-				smellCnt[x3][y3] = 3;
+			for (int i = 1; i <= 8; i++) {
+				if (dirMap[x3][y3][i] > 0) {
+					for (int j = i; j <= 8; j++)
+						dirMap[x3][y3][j] = 0;
+					smell[x3][y3] = true;
+					smellCnt[x3][y3] = 3;
+					break;
+				}
 			}
 
 			// 상어 이동
@@ -154,19 +149,18 @@ public class Main {
 						smell[i][j] = false;
 
 			// 복제 마법 완료
-			for (int i = 1; i < 5; i++) {
-				for (int j = 1; j < 5; j++) {
-					dirMap[i][j].addAll(dirClone[i][j]);
-					map[i][j] += dirClone[i][j].size();
-				}
-			}
+			for (int i = 1; i < 5; i++)
+				for (int j = 1; j < 5; j++)
+					for (int d = 1; d <= 8; d++)
+						dirMap[i][j][d] += dirClone[i][j][d];
 		}
 
 		// 격자에 있는 물고기의 수 출력
 		int sum = 0;
 		for (int i = 1; i < 5; i++)
 			for (int j = 1; j < 5; j++)
-				sum += map[i][j];
+				for (int d = 1; d <= 8; d++)
+					sum += dirMap[i][j][d];
 		System.out.println(sum);
 	}
 
@@ -183,7 +177,8 @@ public class Main {
 				if (visit[x][y])
 					continue;
 
-				sum += map[x][y];
+				for (int d = 1; d <= 8; d++)
+					sum += dirMap[x][y][d];
 				visit[x][y] = true;
 			}
 
