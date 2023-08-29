@@ -8,10 +8,10 @@ public class Main {
 		StringBuilder sb = new StringBuilder();
 
 		BigInteger[] dp = new BigInteger[251];
-		BigInteger two = new BigInteger("2");
+		BigInteger two = BigInteger.valueOf(2);
 
-		dp[0] = new BigInteger("1");
-		dp[1] = new BigInteger("1");
+		dp[0] = BigInteger.valueOf(1);
+		dp[1] = BigInteger.valueOf(1);
 
 		for (int i = 2; i <= 250; i++)
 			dp[i] = dp[i - 1].add(dp[i - 2].multiply(two));
