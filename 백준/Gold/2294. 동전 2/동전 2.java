@@ -26,14 +26,9 @@ public class Main {
 		if (set.contains(k))
 			fio.write(1);
 		else {
-			for (int i = 1; i <= k; i++) {
-				for (int coin : set) {
-					if (i < coin)
-						continue;
-
+			for (int coin : set)
+				for (int i = coin; i <= k; i++)
 					dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-				}
-			}
 
 			fio.write(dp[k] != 100001 ? dp[k] : -1);
 		}
