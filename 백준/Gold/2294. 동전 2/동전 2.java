@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		FastIO fio = new FastIO();
 		int n = fio.nextInt();
 		int k = fio.nextInt();
@@ -21,9 +21,9 @@ public class Main {
 
 		dp[0] = 0;
 
-		for (int c = 0; c < n; c++)
-			for (int i = coin[c]; i <= k; i++)
-				dp[i] = Math.min(dp[i], dp[i - coin[c]] + 1);
+		for (int c : coin)
+			for (int i = c; i <= k; i++)
+				dp[i] = Math.min(dp[i], dp[i - c] + 1);
 
 		fio.write(dp[k] != 100001 ? dp[k] : -1);
 		fio.flush();
