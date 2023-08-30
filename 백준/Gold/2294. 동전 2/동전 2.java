@@ -3,8 +3,6 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -13,25 +11,21 @@ public class Main {
 		FastIO fio = new FastIO();
 		int n = fio.nextInt();
 		int k = fio.nextInt();
-		Set<Integer> set = new HashSet<>();
+		int[] coin = new int[n];
 		int[] dp = new int[k + 1];
 
 		for (int i = 0; i < n; i++)
-			set.add(fio.nextInt());
+			coin[i] = fio.nextInt();
 
 		Arrays.fill(dp, 100001);
 
 		dp[0] = 0;
 
-		if (set.contains(k))
-			fio.write(1);
-		else {
-			for (int coin : set)
-				for (int i = coin; i <= k; i++)
-					dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+		for (int c = 0; c < n; c++)
+			for (int i = coin[c]; i <= k; i++)
+				dp[i] = Math.min(dp[i], dp[i - coin[c]] + 1);
 
-			fio.write(dp[k] != 100001 ? dp[k] : -1);
-		}
+		fio.write(dp[k] != 100001 ? dp[k] : -1);
 		fio.flush();
 		fio.close();
 	}
