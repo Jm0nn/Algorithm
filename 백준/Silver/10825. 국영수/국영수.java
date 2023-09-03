@@ -1,9 +1,61 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
+
+	static class Heap {
+		Student[] stu;
+		int size;
+
+		Heap(int capacity) {
+			stu = new Student[capacity + 1];
+		}
+
+		private void swap(int i1, int i2) {
+			Student tmp = stu[i1];
+			stu[i1] = stu[i2];
+			stu[i2] = tmp;
+		}
+
+		public boolean offer(Student s) {
+			stu[++size] = s;
+
+			int idx = size;
+
+			while (idx >> 1 > 0 && stu[idx >> 1].compareTo(stu[idx]) > 0) {
+				swap(idx >> 1, idx);
+				idx >>= 1;
+			}
+
+			return true;
+		}
+
+		public String poll() {
+			int idx = 1;
+			Student res = stu[idx];
+			stu[idx] = stu[size];
+			stu[size--] = null;
+
+			while ((idx <<= 1) <= size) {
+				if (stu[idx + 1] != null)
+					idx = stu[idx].compareTo(stu[idx + 1]) < 0 ? idx : idx + 1;
+
+				if (stu[idx >> 1].compareTo(stu[idx]) <= 0)
+					break;
+
+				swap(idx >> 1, idx);
+			}
+
+			return res.name;
+		}
+
+		public boolean isEmpty() {
+			if (size == 0)
+				return true;
+			return false;
+		}
+	}
 
 	static class Student implements Comparable<Student> {
 		String name;
@@ -28,7 +80,7 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		int n = Integer.parseInt(br.readLine());
-		PriorityQueue<Student> pq = new PriorityQueue<>();
+		Heap heap = new Heap(n);
 
 		for (int i = 0; i < n; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
@@ -36,12 +88,12 @@ public class Main {
 			int kor = Integer.parseInt(st.nextToken());
 			int eng = Integer.parseInt(st.nextToken());
 			int mat = Integer.parseInt(st.nextToken());
-			pq.offer(new Student(name, kor, eng, mat));
+			heap.offer(new Student(name, kor, eng, mat));
 		}
 
 		StringBuilder sb = new StringBuilder();
-		while (!pq.isEmpty())
-			sb.append(pq.poll().name).append('\n');
+		while (!heap.isEmpty())
+			sb.append(heap.poll()).append('\n');
 
 		System.out.println(sb);
 	}
