@@ -1,6 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -28,7 +28,7 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		int n = Integer.parseInt(br.readLine());
-		Student[] stu = new Student[n];
+		PriorityQueue<Student> pq = new PriorityQueue<>();
 
 		for (int i = 0; i < n; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
@@ -36,14 +36,12 @@ public class Main {
 			int kor = Integer.parseInt(st.nextToken());
 			int eng = Integer.parseInt(st.nextToken());
 			int mat = Integer.parseInt(st.nextToken());
-			stu[i] = new Student(name, kor, eng, mat);
+			pq.offer(new Student(name, kor, eng, mat));
 		}
 
-		Arrays.sort(stu);
-
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < n; i++)
-			sb.append(stu[i].name).append('\n');
+		while (!pq.isEmpty())
+			sb.append(pq.poll().name).append('\n');
 
 		System.out.println(sb);
 	}
