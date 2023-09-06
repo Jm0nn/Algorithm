@@ -14,8 +14,8 @@ public class Main {
 		int top; // 스택 내 수의 개수 (스택의 가장 위에 저장된 수의 인덱스 + 1)
 
 		// 처음에 스택에 start를 넣고 시작
-		GoStack(int start) {
-			stack = new long[1000];
+		GoStack(int size, int start) {
+			stack = new long[size];
 			stack[top++] = start;
 		}
 
@@ -138,7 +138,7 @@ public class Main {
 			int n = Integer.parseInt(br.readLine());
 			for (int i = 0; i < n; i++) {
 				int v = Integer.parseInt(br.readLine()); // 연산을 수행할 수
-				GoStack gs = new GoStack(v); // 고스택
+				GoStack gs = new GoStack(cmdList.size() + 1, v); // 고스택
 
 				boolean isNotError = true; // 에러 여부
 
