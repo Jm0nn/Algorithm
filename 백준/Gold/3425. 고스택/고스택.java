@@ -5,11 +5,55 @@ import java.util.List;
 
 // 고스택 프로그램을 사용하는 문제
 public class Main {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 
-	static final long MAX_NUM = 1_000_000_000L; // 고스택 내 수의 최댓값
+		program: while (true) {
+			List<String> cmdList = new ArrayList<>(); // 커맨드 리스트
+
+			String s; // 커맨드 입력
+			// END가 나올 때 까지 입력
+			while ((s = br.readLine()).charAt(0) != 'E') {
+				// QUIT이 입력되면 프로그램 종료
+				if (s.charAt(0) == 'Q')
+					break program;
+				cmdList.add(s); // 입력받은 커맨드 리스트에 저장
+			}
+
+			// 연산을 수행할 횟수
+			int n = Integer.parseInt(br.readLine());
+			while (n-- > 0) {
+				int v = Integer.parseInt(br.readLine()); // 연산이 이뤄질 수
+				GoStack gs = new GoStack(cmdList.size() + 1, v); // 고스택
+				boolean isNotError = true; // 에러 여부
+
+				// 커맨드 리스트에 저장된 커맨드를 순서대로 실행
+				for (String cmd : cmdList) {
+					// 에러 발생 시 프로그램 종료
+					if (!(isNotError = gs.command(cmd)))
+						break;
+				}
+
+				// 에러가 발생했거나 고스택에 남은 수가 한 개가 아니라면 에러 출력
+				// 프로그램이 정상적으로 종료되어 수가 한 개가 남았다면 해당 수 출력
+				if (!isNotError || gs.top != 1)
+					sb.append("ERROR\n");
+				else
+					sb.append(gs.result()).append('\n');
+			}
+
+			sb.append('\n');
+			br.readLine(); // 공백 입력
+		}
+
+		System.out.println(sb);
+	}
 
 	// 고스택 클래스
 	static class GoStack {
+		final long MAX_NUM = 1_000_000_000L; // 고스택 내 수의 최댓값
+
 		long[] stack; // 스택 배열
 		int top; // 스택 내 수의 개수 (스택의 가장 위에 저장된 수의 인덱스 + 1)
 
@@ -112,89 +156,35 @@ public class Main {
 			return true;
 		}
 
+		// 커맨드 실행
+		boolean command(String cmd) {
+			switch (cmd) {
+			case "POP":
+				return pop();
+			case "INV":
+				return inv();
+			case "DUP":
+				return dup();
+			case "SWP":
+				return swp();
+			case "ADD":
+				return add();
+			case "SUB":
+				return sub();
+			case "MUL":
+				return mul();
+			case "DIV":
+				return div();
+			case "MOD":
+				return mod();
+			}
+			num(Integer.parseInt(cmd.substring(4)));
+			return true;
+		}
+
 		// 스택에 남은 수를 출력
 		long result() {
 			return stack[0];
 		}
 	}
-
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
-
-		program: while (true) {
-			List<String> cmdList = new ArrayList<>(); // 커맨드 리스트
-
-			String s = ""; // 커맨드 입력
-			// END가 나올 때 까지 입력
-			while ((s = br.readLine()).charAt(0) != 'E') {
-				// QUIT이 입력되면 프로그램 종료
-				if (s.charAt(0) == 'Q')
-					break program;
-				cmdList.add(s); // 입력받은 커맨드 리스트에 저장
-			}
-
-			// 연산을 수행할 횟수
-			int n = Integer.parseInt(br.readLine());
-			for (int i = 0; i < n; i++) {
-				int v = Integer.parseInt(br.readLine()); // 연산을 수행할 수
-				GoStack gs = new GoStack(cmdList.size() + 1, v); // 고스택
-
-				boolean isNotError = true; // 에러 여부
-
-				// 커맨드 리스트에 저장된 커맨드를 순서대로 실행
-				for (String cmd : cmdList) {
-					// 커맨드 실행
-					switch (cmd) {
-					case "POP":
-						isNotError = gs.pop();
-						break;
-					case "INV":
-						isNotError = gs.inv();
-						break;
-					case "DUP":
-						isNotError = gs.dup();
-						break;
-					case "SWP":
-						isNotError = gs.swp();
-						break;
-					case "ADD":
-						isNotError = gs.add();
-						break;
-					case "SUB":
-						isNotError = gs.sub();
-						break;
-					case "MUL":
-						isNotError = gs.mul();
-						break;
-					case "DIV":
-						isNotError = gs.div();
-						break;
-					case "MOD":
-						isNotError = gs.mod();
-						break;
-					default:
-						gs.num(Integer.parseInt(cmd.substring(4)));
-					}
-
-					// 에러 발생 시 프로그램 종료
-					if (!isNotError)
-						break;
-				}
-
-				// 에러가 발생했거나 고스택에 남은 수가 한 개가 아니라면 에러 출력
-				// 프로그램이 정상적으로 종료되어 수가 한 개가 남았다면 해당 수 출력
-				if (!isNotError || gs.top != 1)
-					sb.append("ERROR\n");
-				else
-					sb.append(gs.result()).append('\n');
-			}
-
-			sb.append('\n'); // 공백 출력
-			br.readLine(); // 공백 입력
-		}
-
-		System.out.println(sb);
-	}
-
 }
