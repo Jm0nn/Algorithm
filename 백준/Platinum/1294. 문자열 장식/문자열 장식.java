@@ -68,18 +68,16 @@ public class Main {
 			int idx = size;
 
 			while (idx >> 1 > 0) {
-				if (compare(tree[idx >> 1], tree[idx]) < 0)
+				if (compare(tree[idx >> 1], tree[idx]) <= 0)
 					break;
 
-				swap(idx >> 1, idx);
-				idx >>= 1;
+				swap(idx, (idx >>= 1));
 			}
 		}
 
 		String poll() {
-			String res = tree[1];
-
 			int idx = 1;
+			String res = tree[idx];
 			tree[idx] = tree[size];
 			tree[size--] = null;
 
