@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 public class Main {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		Set<Integer> set = new HashSet<>();
+		Set<Integer> set = new HashSet<>(20);
 		int m = Integer.parseInt(br.readLine());
 		StringBuilder sb = new StringBuilder();
 		while (m-- > 0) {
@@ -33,7 +33,6 @@ public class Main {
 					set.add(x);
 				break;
 			case "all":
-				set.clear();
 				for (int i = 1; i <= 20; ++i)
 					set.add(i);
 				break;
