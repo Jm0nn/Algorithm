@@ -7,12 +7,12 @@ public class Main {
 
 	static class Node {
 		int end;
-		int weight;
+		int time;
 		Node next;
 
-		Node(int end, int weight, Node next) {
+		Node(int end, int time, Node next) {
 			this.end = end;
-			this.weight = weight;
+			this.time = time;
 			this.next = next;
 		}
 	}
@@ -20,7 +20,7 @@ public class Main {
 	static final int INF = 99999999;
 
 	static int N, M, W;
-	static int[] dist;
+	static int[] dist = new int[501];
 	static Node[] graph;
 
 	public static void main(String[] args) throws Exception {
@@ -35,7 +35,6 @@ public class Main {
 			M = Integer.parseInt(st.nextToken());
 			W = Integer.parseInt(st.nextToken());
 
-			dist = new int[N + 1];
 			graph = new Node[N + 1];
 
 			int cnt = M + W;
@@ -60,7 +59,8 @@ public class Main {
 	}
 
 	static boolean bf() {
-		Arrays.fill(dist, INF);
+		for (int i = 1; i <= N; ++i)
+			dist[i] = INF;
 
 		for (int i = 1; i <= N; ++i) {
 			boolean update = false;
@@ -68,7 +68,7 @@ public class Main {
 			for (int start = 1; start <= N; ++start) {
 				for (Node n = graph[start]; n != null; n = n.next) {
 					int end = n.end;
-					int time = n.weight;
+					int time = n.time;
 
 					if (dist[end] > dist[start] + time) {
 						dist[end] = dist[start] + time;
