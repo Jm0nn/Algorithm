@@ -1,19 +1,19 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
 
-	static class Vertex {
-		int to;
+	static class Node {
+		int end;
 		int weight;
+		Node next;
 
-		Vertex(int to, int weight) {
-			this.to = to;
+		Node(int end, int weight, Node next) {
+			this.end = end;
 			this.weight = weight;
+			this.next = next;
 		}
 	}
 
@@ -21,9 +21,8 @@ public class Main {
 
 	static int N, M, W;
 	static int[] dist;
-	static List<Vertex>[] list;
+	static Node[] graph;
 
-	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
@@ -37,9 +36,7 @@ public class Main {
 			W = Integer.parseInt(st.nextToken());
 
 			dist = new int[N + 1];
-			list = new List[N + 1];
-			for (int i = 1; i <= N; ++i)
-				list[i] = new ArrayList<>();
+			graph = new Node[N + 1];
 
 			int cnt = M + W;
 			while (cnt-- > 0) {
@@ -49,55 +46,42 @@ public class Main {
 				int T = Integer.parseInt(st.nextToken());
 
 				if (cnt < W) {
-					list[S].add(new Vertex(E, -T));
+					graph[S] = new Node(E, -T, graph[S]);
 				} else {
-					list[S].add(new Vertex(E, T));
-					list[E].add(new Vertex(S, T));
+					graph[S] = new Node(E, T, graph[S]);
+					graph[E] = new Node(S, T, graph[E]);
 				}
 			}
 
-			boolean cycle = false;
-			for (int i = 1; i <= N; ++i) {
-				if (bf(i)) {
-					cycle = true;
-					break;
-				}
-			}
-
-			sb.append(cycle ? "YES\n" : "NO\n");
+			sb.append(bf() ? "YES\n" : "NO\n");
 		}
 
 		System.out.println(sb);
 	}
 
-	static boolean bf(int start) {
+	static boolean bf() {
 		Arrays.fill(dist, INF);
-		dist[start] = 0;
-		boolean update = false;
 
-		for (int i = 1; i < N; ++i) {
-			update = false;
+		for (int i = 1; i <= N; ++i) {
+			boolean update = false;
 
-			for (int j = 1; j <= N; ++j) {
-				for (Vertex v : list[j]) {
-					if (dist[j] < INF && dist[v.to] > dist[j] + v.weight) {
-						dist[v.to] = dist[j] + v.weight;
+			for (int start = 1; start <= N; ++start) {
+				for (Node n = graph[start]; n != null; n = n.next) {
+					int end = n.end;
+					int time = n.weight;
+
+					if (dist[end] > dist[start] + time) {
+						dist[end] = dist[start] + time;
 						update = true;
+
+						if (i == N)
+							return true;
 					}
 				}
 			}
 
 			if (!update)
 				break;
-		}
-
-		if (update) {
-			for (int i = 1; i <= N; ++i) {
-				for (Vertex v : list[i]) {
-					if (dist[i] < INF && dist[v.to] > dist[i] + v.weight)
-						return true;
-				}
-			}
 		}
 
 		return false;
