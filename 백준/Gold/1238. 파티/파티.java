@@ -24,24 +24,16 @@ public class Main {
 		}
 	}
 
-	static final int INF = Integer.MAX_VALUE;
-
-	static int N, M, X;
-	static int[] toX;
-	static int[] dist;
-	static Node[] graph;
-
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
-		X = Integer.parseInt(st.nextToken());
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		int X = Integer.parseInt(st.nextToken());
 
-		toX = new int[N + 1];
-		dist = new int[N + 1];
-		graph = new Node[N + 1];
+		Node[] toHome = new Node[N + 1];
+		Node[] toParty = new Node[N + 1];
 
 		while (M-- > 0) {
 			st = new StringTokenizer(br.readLine());
@@ -49,30 +41,30 @@ public class Main {
 			int B = Integer.parseInt(st.nextToken());
 			int T = Integer.parseInt(st.nextToken());
 
-			graph[A] = new Node(B, T, graph[A]);
+			toParty[A] = new Node(B, T, toParty[A]);
+			toHome[B] = new Node(A, T, toHome[B]);
 		}
 
-		for (int i = 1; i <= N; ++i)
-			toX[i] = dijkstra(i);
-
-		dijkstra(X);
+		int[] party = dijkstra(N, X, toParty);
+		int[] home = dijkstra(N, X, toHome);
 
 		int max = 0;
 		for (int i = 1; i <= N; ++i) {
-			if (max < toX[i] + dist[i])
-				max = toX[i] + dist[i];
+			if (max < party[i] + home[i])
+				max = party[i] + home[i];
 		}
 
 		System.out.println(max);
 	}
 
-	static int dijkstra(int start) {
-		Arrays.fill(dist, INF);
+	static int[] dijkstra(int N, int X, Node[] graph) {
+		int[] times = new int[N + 1];
+		Arrays.fill(times, Integer.MAX_VALUE);
 
-		dist[start] = 0;
+		times[X] = 0;
 		boolean[] visit = new boolean[N + 1];
 		Queue<Node> pq = new PriorityQueue<>();
-		pq.offer(new Node(start, 0, null));
+		pq.offer(new Node(X, 0, null));
 
 		int cnt = 0;
 
@@ -86,12 +78,11 @@ public class Main {
 			visit[end] = true;
 
 			for (Node n = graph[end]; n != null; n = n.next) {
-				int tmp = n.end;
-				int time = n.time;
+				int newTime = cur.time + n.time;
 
-				if (dist[tmp] > dist[end] + time) {
-					dist[tmp] = dist[end] + time;
-					pq.offer(new Node(tmp, dist[tmp], null));
+				if (times[n.end] > newTime) {
+					times[n.end] = newTime;
+					pq.offer(new Node(n.end, newTime, null));
 				}
 			}
 
@@ -99,6 +90,6 @@ public class Main {
 				break;
 		}
 
-		return dist[X];
+		return times;
 	}
 }
