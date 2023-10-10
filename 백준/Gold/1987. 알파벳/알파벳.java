@@ -8,8 +8,7 @@ public class Main {
 
 	static int r, c, max;
 	static char[][] board;
-	static boolean[] visitAlpha = new boolean[26];
-	static boolean[][] visitPos;
+	static boolean[] visit = new boolean[26];
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,13 +17,15 @@ public class Main {
 		r = Integer.parseInt(st.nextToken());
 		c = Integer.parseInt(st.nextToken());
 
-		board = new char[r][];
-		visitPos = new boolean[r][c];
+		board = new char[r][c];
 
-		for (int i = 0; i < r; ++i)
-			board[i] = br.readLine().toCharArray();
+		for (int i = 0; i < r; ++i) {
+			String input = br.readLine();
+			for (int j = 0; j < c; ++j)
+				board[i][j] = input.charAt(j);
+		}
 
-		visitAlpha[board[0][0] - 'A'] = true;
+		visit[board[0][0] - 'A'] = true;
 		dfs(1, 0, 0);
 
 		System.out.println(max);
@@ -41,19 +42,14 @@ public class Main {
 			if (0 > nx || nx >= r || 0 > ny || ny >= c)
 				continue;
 
-			if (visitPos[nx][ny])
+			int alpha = board[nx][ny] - 'A';
+
+			if (visit[alpha])
 				continue;
 
-			char c = board[nx][ny];
-
-			if (visitAlpha[c - 'A'])
-				continue;
-
-			visitPos[nx][ny] = true;
-			visitAlpha[c - 'A'] = true;
+			visit[alpha] = true;
 			dfs(cnt + 1, nx, ny);
-			visitPos[nx][ny] = false;
-			visitAlpha[c - 'A'] = false;
+			visit[alpha] = false;
 		}
 	}
 
