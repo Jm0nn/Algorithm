@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -13,10 +14,11 @@ public class Main {
 		int n = Integer.parseInt(st.nextToken());
 		int k = Integer.parseInt(st.nextToken());
 
-		boolean[] visit = new boolean[100001];
+		int[] visit = new int[100001];
+		Arrays.fill(visit, Integer.MAX_VALUE);
 		Queue<int[]> queue = new ArrayDeque<>();
 
-		visit[n] = true;
+		visit[n] = 0;
 		queue.offer(new int[] { n, 0 });
 
 		int ans = 0;
@@ -26,8 +28,6 @@ public class Main {
 			int[] cur = queue.poll();
 			int x = cur[0];
 			int move = cur[1];
-
-			visit[x] = true;
 
 			if (cnt > 0 && ans < move)
 				break;
@@ -54,9 +54,10 @@ public class Main {
 					break;
 				}
 
-				if (0 > nx || nx > 100000 || visit[nx])
+				if (0 > nx || nx > 100000 || visit[nx] < move)
 					continue;
 
+				visit[nx] = move;
 				queue.offer(new int[] { nx, move + 1 });
 			}
 		}
