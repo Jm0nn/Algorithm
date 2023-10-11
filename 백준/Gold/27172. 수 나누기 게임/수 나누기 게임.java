@@ -14,6 +14,7 @@ public class Main {
 
 		int[] card = new int[n]; // 카드 배열
 		boolean[] check = new boolean[1000001]; // 뽑힌 카드 확인 배열
+		int[] point = new int[1000001]; // 점수 배열
 
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < n; i++) {
@@ -22,42 +23,24 @@ public class Main {
 			check[num] = true;
 		}
 
-		@SuppressWarnings("unchecked")
-		List<Integer>[] win = new List[n];
+		for (int i = 0; i < n; ++i) {
+			int num = card[i] * 2; // card[i]의 배수
 
-		for (int i = 0; i < n; i++) {
-			// card[i]를 이기는 수 배열
-			win[i] = new ArrayList<>();
-
-			// 에라토스테네스의 체
-			for (int j = 1; j * j <= card[i]; j++) {
-				// j가 card[i]의 약수
-				if (card[i] % j == 0)
-					win[i].add(j);
-
-				// card[i]를 j로 나눈 수가 card[i]의 약수
-				if (j * j != card[i] && card[i] % j == 0)
-					win[i].add(card[i] / j);
-			}
-		}
-
-		int[] ans = new int[1000001]; // 점수 배열
-
-		for (int i = 0; i < n; i++) {
-			// card[i]를 이기는 카드 배열
-			for (int k : win[i]) {
-				// 뽑힌 번호에 대해
-				if (check[k]) {
-					ans[k]++; // 이긴 카드 점수 증가
-					ans[card[i]]--; // 진 카드 점수 감소
+			while (num <= 1000000) {
+				// num이 뽑힌 카드라면
+				if (check[num]) {
+					--point[num]; // card[i]의 배수 점수 감소
+					++point[card[i]]; // card[i] 점수 증가
 				}
+
+				num += card[i];
 			}
 		}
 
 		// 점수 출력
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < n; i++)
-			sb.append(ans[card[i]]).append(' ');
+			sb.append(point[card[i]]).append(' ');
 		System.out.println(sb);
 	}
 
