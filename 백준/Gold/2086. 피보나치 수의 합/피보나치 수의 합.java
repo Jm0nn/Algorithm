@@ -16,10 +16,7 @@ public class Main {
 		long[][] res1 = fibo(a);
 		long[][] res2 = fibo(b + 1);
 
-		long ans = res2[0][0] - res1[0][0];
-
-		if (ans < 0)
-			ans += MOD;
+		long ans = (res2[0][0] - res1[0][0] + MOD) % MOD;
 
 		System.out.println(ans);
 	}
