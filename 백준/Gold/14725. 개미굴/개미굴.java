@@ -26,19 +26,17 @@ public class Main {
 		}
 
 		void print(Node node, int depth) {
-			Node cur = node;
-
-			if (cur.child.size() == 0)
+			if (node.child.size() == 0)
 				return;
 
-			List<String> list = new ArrayList<>(cur.child.keySet());
+			List<String> list = new ArrayList<>(node.child.keySet());
 			Collections.sort(list);
 
 			for (String s : list) {
 				for (int i = 0; i < depth; ++i)
 					sb.append("--");
 				sb.append(s).append('\n');
-				print(cur.child.get(s), depth + 1);
+				print(node.child.get(s), depth + 1);
 			}
 		}
 	}
