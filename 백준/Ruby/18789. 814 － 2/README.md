@@ -12,7 +12,7 @@
 
 ### 제출 일자
 
-2023년 10월 18일 09:04:32
+2023년 10월 30일 14:11:59
 
 ### 문제 설명
 
@@ -28,7 +28,7 @@
 
 <p> </p>
 
-<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/38d17ba7-3ff4-40e7-8a4b-9f7ae09d6652/-/preview/" style="height: 168px; width: 250px;"><br>
+<p style="text-align: center;"><img alt="" src="" style="height: 168px; width: 250px;"><br>
  </p>
 
 <p>원으로 표시된 1에서 시작해서, 아래쪽, 오른쪽, 왼쪽위, 왼쪽으로 이동하면 12314가 만들어지므로, 이 표에서는 12,314를 읽을 수 있다. 만약, 4에서 시작해서 역순으로 이동하면 41,321도 읽을 수 있을 것이다.</p>
