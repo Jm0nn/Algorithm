@@ -3,7 +3,7 @@ package com.jm0nn.codetree;
 import java.io.*;
 import java.util.*;
 
-public class 왕실의기사대결 {
+public class G3_왕실의기사대결 {
 
 	private static class Knight {
 
