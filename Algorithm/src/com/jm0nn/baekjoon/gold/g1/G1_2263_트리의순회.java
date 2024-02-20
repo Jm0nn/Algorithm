@@ -36,7 +36,14 @@ public class G1_2263_트리의순회 {
 
 		sb.append(post[postEnd]).append(' ');
 
-		int inRoot = Arrays.binarySearch(in, post[postEnd]);
+		int inRoot = -1;
+
+		for (int i = 0; i < n; ++i) {
+			if (in[i] == post[postEnd]) {
+				inRoot = i;
+				break;
+			}
+		}
 
 		pre(inStart, postStart, postStart + (inRoot - 1 - inStart));
 		pre(inRoot + 1, postStart + (inRoot - inStart), postEnd - 1);
