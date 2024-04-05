@@ -94,7 +94,7 @@ public class G2_싸움땅 {
 				} else {
 					Player p2 = playerPos[x][y];
 
-					if (p.s + p.gun > p2.s + p2.gun) {
+					if (p.s + p.gun > p2.s + p2.gun || (p.s + p.gun == p2.s + p2.gun && p.s > p2.s)) {
 						int point = p.s + p.gun - p2.s - p2.gun;
 						points[p.num] += point;
 
@@ -127,9 +127,10 @@ public class G2_싸움땅 {
 						playerPos[x][y] = p;
 
 						if (!guns[x][y].isEmpty() && p.gun < guns[x][y].peek()) {
+							guns[x][y].offer(p.gun);
 							p.gun = guns[x][y].poll();
 						}
-					} else if (p.s + p.gun < p2.s + p2.gun) {
+					} else {
 						int point = p2.s + p2.gun - p.s - p.gun;
 						points[p2.num] += point;
 
@@ -162,76 +163,8 @@ public class G2_싸움땅 {
 						playerPos[x][y] = p2;
 
 						if (!guns[x][y].isEmpty() && p2.gun < guns[x][y].peek()) {
-							p2.gun = guns[x][y].poll();
-						}
-					} else {
-						if (p.s > p2.s) {
 							guns[x][y].offer(p2.gun);
-							p2.gun = 0;
-
-							int x2 = p2.x;
-							int y2 = p2.y;
-							int d2 = p2.d;
-
-							int nx2 = x2 + deltas[d2][0];
-							int ny2 = y2 + deltas[d2][1];
-
-							while (0 >= nx2 || nx2 > n || 0 >= ny2 || ny2 > n || playerPos[nx2][ny2] != null) {
-								d2 = (d2 + 1) % 4;
-								p2.d = d2;
-								nx2 = x2 + deltas[d2][0];
-								ny2 = y2 + deltas[d2][1];
-							}
-
-							p2.x = nx2;
-							p2.y = ny2;
-
-							playerPos[nx2][ny2] = p2;
-
-							if (!guns[nx2][ny2].isEmpty()) {
-								p2.gun = guns[nx2][ny2].poll();
-							}
-
-							playerPos[x][y] = p;
-
-							if (!guns[x][y].isEmpty() && p.gun < guns[x][y].peek()) {
-								p.gun = guns[x][y].poll();
-							}
-						} else {
-							int point = p2.s + p2.gun - p.s - p.gun;
-							points[p2.num] += point;
-
-							guns[x][y].offer(p.gun);
-							p.gun = 0;
-
-							int x2 = p.x;
-							int y2 = p.y;
-							int d2 = p.d;
-
-							int nx2 = x2 + deltas[d2][0];
-							int ny2 = y2 + deltas[d2][1];
-
-							while (0 >= nx2 || nx2 > n || 0 >= ny2 || ny2 > n || playerPos[nx2][ny2] != null) {
-								d2 = (d2 + 1) % 4;
-								p.d = d2;
-								nx2 = x2 + deltas[d2][0];
-								ny2 = y2 + deltas[d2][1];
-							}
-
-							p.x = nx2;
-							p.y = ny2;
-
-							playerPos[nx2][ny2] = p;
-
-							if (!guns[nx2][ny2].isEmpty()) {
-								p.gun = guns[nx2][ny2].poll();
-							}
-
-							playerPos[x][y] = p2;
-
-							if (!guns[x][y].isEmpty() && p2.gun < guns[x][y].peek()) {
-								p2.gun = guns[x][y].poll();
-							}
+							p2.gun = guns[x][y].poll();
 						}
 					}
 				}
