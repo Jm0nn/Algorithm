@@ -22,6 +22,8 @@ public class LV3_n1카드게임 {
         int n = cards.length;
         int count = 0;
 
+        // TreeSet으로 카드 관리
+        // contains() 메서드 사용 시 O(log(n))의 시간복잡도로 탐색 가능
         TreeSet<Integer> hand = new TreeSet<>();
         TreeSet<Integer> get = new TreeSet<>();
 
@@ -36,11 +38,8 @@ public class LV3_n1카드게임 {
                 break;
             }
 
-            int card1 = cards[count++];
-            int card2 = cards[count++];
-
-            get.add(card1);
-            get.add(card2);
+            get.add(cards[count++]);
+            get.add(cards[count++]);
 
             boolean next = false;
 
