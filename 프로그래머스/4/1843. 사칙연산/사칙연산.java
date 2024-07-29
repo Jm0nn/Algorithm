@@ -20,7 +20,7 @@ class Solution {
 
         for (int size = 3; size <= len; size += 2) {
             for (int k = 1; k <= len - 2; k += 2) {
-                for (int i = Math.max(k - (size - 2), 0); i <= Math.min(k - 1, len - size + 1); i += 2) {
+                for (int i = Math.max(k - (size - 2), 0); i <= Math.min(k - 1, len - size); i += 2) {
                     int j = i + size - 1;
 
                     if (arr[k].equals("+")) {
