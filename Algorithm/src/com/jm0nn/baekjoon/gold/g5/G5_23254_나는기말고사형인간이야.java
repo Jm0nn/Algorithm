@@ -34,14 +34,13 @@ public class G5_23254_나는기말고사형인간이야 {
 
             if (cur[0] >= 100) break;
 
-            int cnt = (100 - cur[0]) / cur[1];
+            int cnt = Math.min(24 * n - time, (100 - cur[0]) / cur[1]);
 
             if (cnt == 0) {
                 sum += 100 - cur[0];
                 cur[0] += 100 - cur[0];
                 ++time;
             } else {
-                cnt = Math.min(24 * n - time, cnt);
                 sum += cur[1] * cnt;
                 cur[0] += cur[1] * cnt;
                 time += cnt;
