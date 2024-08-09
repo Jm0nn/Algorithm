@@ -8,6 +8,7 @@ public class Main {
         int s = Integer.parseInt(st.nextToken());
         int t = Integer.parseInt(st.nextToken());
         int d = Integer.parseInt(st.nextToken());
-        System.out.print(t * d / s / 2);
+        int answer = t * d / s / 2;
+        System.out.print(answer);
     }
 }
