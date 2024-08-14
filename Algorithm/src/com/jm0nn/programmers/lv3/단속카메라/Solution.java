@@ -16,7 +16,7 @@ public class Solution {
             int left = routes[i][0];
             int right = routes[i][1];
 
-            if (right <= pos) {
+            if (right < pos) {
                 pos = right;
             } else if (left > pos) {
                 pos = right;
