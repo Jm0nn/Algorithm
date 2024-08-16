@@ -1,13 +1,12 @@
-import java.util.Scanner;
+import java.io.*;
 
 public class Main {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
-		
-		if (n % 7 == 1 || n % 7 == 3)
-			System.out.println("CY");
-		else
-			System.out.println("SK");
-	}
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        String answer;
+        if (n % 7 == 1 || n % 7 == 3) answer = "CY";
+        else answer = "SK";
+        System.out.print(answer);
+    }
 }
