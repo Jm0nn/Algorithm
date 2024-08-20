@@ -22,7 +22,7 @@ public class Main {
         for (int i = 0; i < N; ++i) {
             int marble = Integer.parseInt(st.nextToken());
             marbles[i] = marble;
-            max = Math.max(max, marble);
+            max = Math.max(marble, max);
             sum += marble;
         }
 
@@ -40,7 +40,7 @@ public class Main {
         Arrays.fill(groupCnt, 1);
         boolean[] removed = new boolean[N];
 
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < N - 1; ++i) {
             int cnt = 0;
             for (boolean r : removed) if (!r) ++cnt;
             if (cnt == M) break;
@@ -54,9 +54,7 @@ public class Main {
                     removed[j] = true;
                     ++groupCnt[i];
                     marbles[i] += marbles[j];
-                } else {
-                    break;
-                }
+                } else break;
             }
         }
 
