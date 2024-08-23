@@ -7,8 +7,8 @@ public class Main {
         int a = 0;
         int b = 0;
         for (int i = 0; i < input.length; i += 2) {
-            if (input[i] == 'A') a += input[i + 1] - '0';
-            else b += input[i + 1] - '0';
+            if (input[i] == 'A') a += input[i + 1];
+            else b += input[i + 1];
         }
         System.out.print(a > b ? 'A' : 'B');
     }
